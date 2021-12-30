@@ -1,9 +1,10 @@
 package controller
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/nuno/nunes-jumia/src/handler"
+	"github.com/nuno/nunes-jumia/src/dto"
 	"github.com/nuno/nunes-jumia/src/service"
 	"net/http"
 	"strconv"
@@ -35,20 +36,21 @@ func NewCustomerController(service service.CustomerService) CustomerController {
 }
 
 func (controller customerController) GetCustomers(ctx *gin.Context) {
-	limit, offset, params, errx := extractQueryParams(ctx)
-	if errx != nil {
-		ctx.JSON(errx.Status(), errx.JSON())
+	limit, offset, params, err := extractQueryParams(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, dto.NewError(err.Error()))
 	}
 
-	outputDto, errx := controller.service.GetCustomers(limit, offset, params)
-	if errx != nil {
-		ctx.IndentedJSON(errx.Status(), errx.JSON())
+	outputDto, err := controller.service.GetCustomers(limit, offset, params)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, dto.NewError(err.Error()))
+		return
 	}
 
 	ctx.JSON(http.StatusOK, outputDto)
 }
 
-func extractQueryParams(ctx *gin.Context) (int, int, map[string]string, handler.Errorx) {
+func extractQueryParams(ctx *gin.Context) (int, int, map[string]string, error) {
 	var (
 		inputCountryName = ctx.Query(countryNameKey)
 		inputStatus      = ctx.Query(statusKey)
@@ -68,9 +70,9 @@ func extractQueryParams(ctx *gin.Context) (int, int, map[string]string, handler.
 	}
 
 	if len(strings.TrimSpace(inputLimit)) > 0 {
-		intLimit, errx := parseInt(inputLimit, limitKey, 32)
-		if errx != nil {
-			return 0, 0, map[string]string{}, errx
+		intLimit, err := parseInt(inputLimit, limitKey, 32)
+		if err != nil {
+			return 0, 0, map[string]string{}, err
 		}
 		limit = intLimit
 	} else {
@@ -78,9 +80,9 @@ func extractQueryParams(ctx *gin.Context) (int, int, map[string]string, handler.
 	}
 
 	if len(strings.TrimSpace(inputOffset)) > 0 {
-		intOffset, errx := parseInt(inputOffset, offsetKey, 32)
-		if errx != nil {
-			return 0, 0, map[string]string{}, errx
+		intOffset, err := parseInt(inputOffset, offsetKey, 32)
+		if err != nil {
+			return 0, 0, map[string]string{}, err
 		}
 		offset = intOffset
 	} else {
@@ -90,11 +92,10 @@ func extractQueryParams(ctx *gin.Context) (int, int, map[string]string, handler.
 	return limit, offset, params, nil
 }
 
-func parseInt(strValue, fieldName string, bitSize int) (int, handler.Errorx) {
+func parseInt(strValue, fieldName string, bitSize int) (int, error) {
 	value, err := strconv.ParseInt(strValue, 10, bitSize)
 	if err != nil {
-		errx := handler.NewError(http.StatusBadRequest, fmt.Sprintf("error to parse %s", fieldName))
-		return 0, errx
+		return 0, errors.New(fmt.Sprintf("error to parse %s", fieldName))
 	}
 	return int(value), nil
 }
