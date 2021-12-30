@@ -1,9 +1,6 @@
 package dto
 
 import (
-	"github.com/nuno/nunes-jumia/src/entity"
-	"github.com/nuno/nunes-jumia/src/model"
-	"regexp"
 	"strings"
 )
 
@@ -26,43 +23,22 @@ func (customer *Customer) SetFormattedName(name string) {
 	customer.CustomerName = strings.Title(strings.ToLower(name))
 }
 
-func NewCustomerOutputDto(total int64, limit, offset int, customersData []model.Customer) (outputDto CustomerOutputDto) {
-	matcher, _ := regexp.Compile("^\\((\\d{3})\\)\\s((?:.*))$")
-
-	for _, customerData := range customersData {
-		var (
-			matches = matcher.FindStringSubmatch(customerData.Phone)
-		)
-
-		outputDto.Phones = append(outputDto.Phones, NewCustomer(customerData, matches))
+func NewIdentifiedCustomer(name, phoneNumber, countryCode, countryName, status string) Customer {
+	return Customer{
+		CustomerName: strings.Title(strings.ToLower(name)),
+		CountryName:  countryName,
+		CountryCode:  countryCode,
+		PhoneNumber:  phoneNumber,
+		Status:       status,
 	}
-
-	outputDto.Total = total
-	outputDto.Limit = limit
-	outputDto.Offset = offset
-
-	return
 }
 
-func NewCustomer(customerData model.Customer, matches []string) (customerInfo Customer) {
-	customerInfo.SetFormattedName(customerData.Name)
-
-	if matches == nil || len(matches) == 0 {
-		customerInfo.PhoneNumber = customerData.Phone
-		customerInfo.CountryName = "undefined_country_name"
-		customerInfo.CountryCode = "undefined_country_code"
-		customerInfo.Status = "Invalid"
-		return customerInfo
+func NewUnidentifiedCustomer(name, phoneNumber string) Customer {
+	return Customer{
+		CustomerName: strings.Title(strings.ToLower(name)),
+		CountryName:  "undefined_country_name",
+		CountryCode:  "undefined_country_code",
+		Status:       "Invalid",
+		PhoneNumber:  phoneNumber,
 	}
-
-	countryCode := matches[1]
-	phoneNumber := matches[2]
-	customerCountry := entity.Countries[countryCode]
-
-	customerInfo.PhoneNumber = phoneNumber
-	customerInfo.CountryCode = countryCode
-	customerInfo.CountryName = customerCountry.Name
-	customerInfo.Status = customerCountry.IsValidPhoneNumber(customerData.Phone)
-
-	return customerInfo
 }

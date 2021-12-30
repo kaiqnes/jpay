@@ -4,7 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/nuno/nunes-jumia/src/dto"
+	"github.com/nuno/nunes-jumia/src/entity"
+	"github.com/nuno/nunes-jumia/src/model"
 	"github.com/nuno/nunes-jumia/src/repository"
+	"regexp"
 )
 
 //go:generate mockgen -source=./customer-service.go -destination=./mocks/customer-service_mock.go
@@ -29,7 +32,41 @@ func (service customerService) GetCustomers(limit, offset int, params map[string
 		return dto.CustomerOutputDto{}, errors.New(errMsg)
 	}
 
-	outputDto := dto.NewCustomerOutputDto(total, limit, offset, customers)
+	outputDto := buildCustomerOutputDto(total, limit, offset, customers)
 
 	return outputDto, nil
+}
+
+func buildCustomerOutputDto(total int64, limit, offset int, customers []model.Customer) (outputDto dto.CustomerOutputDto) {
+	regexGetCountryCodeAndPhoneNumber := "^\\((\\d{3})\\)\\s((?:.*))$"
+	matcher, _ := regexp.Compile(regexGetCountryCodeAndPhoneNumber)
+
+	for _, customer := range customers {
+		var (
+			matches = matcher.FindStringSubmatch(customer.Phone)
+		)
+
+		outputDto.Phones = append(outputDto.Phones, buildCustomerDto(customer, matches))
+	}
+
+	outputDto.Total = total
+	outputDto.Limit = limit
+	outputDto.Offset = offset
+
+	return
+}
+
+func buildCustomerDto(customer model.Customer, matches []string) (newCustomer dto.Customer) {
+	newCustomer.SetFormattedName(customer.Name)
+
+	if matches == nil || len(matches) == 0 {
+		return dto.NewUnidentifiedCustomer(customer.Name, customer.Phone)
+	}
+
+	countryCode := matches[1]
+	phoneNumber := matches[2]
+	customerCountry := entity.Countries[countryCode]
+	status := customerCountry.IsValidPhoneNumber(customer.Phone)
+
+	return dto.NewIdentifiedCustomer(customer.Name, phoneNumber, countryCode, customerCountry.Name, status)
 }
