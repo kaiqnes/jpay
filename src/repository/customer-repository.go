@@ -26,7 +26,7 @@ func (repository customerRepository) GetCustomers(limit, offset int, queryParams
 		total     int64
 	)
 
-	result := repository.session.Table("customer").Find(&customers)
+	result := repository.session.Find(&customers)
 	if result.Error != nil {
 		return total, customers, result.Error
 	}
