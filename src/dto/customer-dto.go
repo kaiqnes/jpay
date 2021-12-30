@@ -1,8 +1,8 @@
 package dto
 
 import (
+	"github.com/nuno/nunes-jumia/src/entity"
 	"github.com/nuno/nunes-jumia/src/model"
-	"github.com/nuno/nunes-jumia/src/model/country"
 	"regexp"
 	"strings"
 )
@@ -57,7 +57,7 @@ func NewCustomer(customerData model.Customer, matches []string) (customerInfo Cu
 
 	countryCode := matches[1]
 	phoneNumber := matches[2]
-	customerCountry := country.Countries[countryCode]
+	customerCountry := entity.Countries[countryCode]
 
 	customerInfo.PhoneNumber = phoneNumber
 	customerInfo.CountryCode = countryCode

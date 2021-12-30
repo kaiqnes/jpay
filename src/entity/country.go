@@ -1,26 +1,34 @@
-package country
+package entity
 
 import "regexp"
 
+const (
+	CodeCameroon   = "237"
+	CodeEthiopia   = "251"
+	CodeMorocco    = "212"
+	CodeMozambique = "258"
+	CodeUganda     = "256"
+)
+
 var (
 	Countries = map[string]Country{
-		"237": {
+		CodeCameroon: {
 			Name:  "Cameroon",
 			Regex: "\\(237\\)\\ ?[2368]\\d{7,8}$",
 		},
-		"251": {
+		CodeEthiopia: {
 			Name:  "Ethiopia",
 			Regex: "\\(251\\)\\ ?[1-59]\\d{8}$",
 		},
-		"212": {
+		CodeMorocco: {
 			Name:  "Morocco",
 			Regex: "\\(212\\)\\ ?[5-9]\\d{8}$",
 		},
-		"258": {
+		CodeMozambique: {
 			Name:  "Mozambique",
 			Regex: "\\(258\\)\\ ?[28]\\d{7,8}$",
 		},
-		"256": {
+		CodeUganda: {
 			Name:  "Uganda",
 			Regex: "\\(256\\)\\ ?\\d{9}$",
 		},
