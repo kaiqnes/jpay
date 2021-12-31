@@ -46,7 +46,7 @@ func buildCustomerOutputDto(total int64, limit, offset int, customers []model.Cu
 			matches = matcher.FindStringSubmatch(customer.Phone)
 		)
 
-		outputDto.Phones = append(outputDto.Phones, buildCustomerDto(customer, matches))
+		outputDto.Customers = append(outputDto.Customers, buildCustomerDto(customer, matches))
 	}
 
 	outputDto.Total = total
