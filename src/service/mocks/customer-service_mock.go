@@ -9,7 +9,6 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	dto "github.com/nuno/nunes-jumia/src/dto"
-	handler "github.com/nuno/nunes-jumia/src/handler"
 )
 
 // MockCustomerService is a mock of CustomerService interface.
@@ -36,11 +35,11 @@ func (m *MockCustomerService) EXPECT() *MockCustomerServiceMockRecorder {
 }
 
 // GetCustomers mocks base method.
-func (m *MockCustomerService) GetCustomers(limit, offset int, params map[string]string) (dto.CustomerOutputDto, handler.Errorx) {
+func (m *MockCustomerService) GetCustomers(limit, offset int, params map[string]string) (dto.CustomerOutputDto, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetCustomers", limit, offset, params)
 	ret0, _ := ret[0].(dto.CustomerOutputDto)
-	ret1, _ := ret[1].(handler.Errorx)
+	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
