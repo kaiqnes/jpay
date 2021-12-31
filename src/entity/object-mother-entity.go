@@ -12,7 +12,7 @@ type testScenario struct {
 	expect      string
 }
 
-func MakeEntityWithValidPhoneFromCameroon() *testScenario {
+func MakeScenarioWithValidPhoneFromCameroon() *testScenario {
 	return &testScenario{
 		testName:    "Valid phone from Cameroon",
 		phone:       "(237) 673122155",
@@ -21,7 +21,7 @@ func MakeEntityWithValidPhoneFromCameroon() *testScenario {
 	}
 }
 
-func MakeEntityWithInvalidPhoneFromCameroon() *testScenario {
+func MakeScenarioWithInvalidPhoneFromCameroon() *testScenario {
 	return &testScenario{
 		testName:    "Invalid phone from Cameroon",
 		phone:       "(237) 6622284920",
@@ -30,7 +30,7 @@ func MakeEntityWithInvalidPhoneFromCameroon() *testScenario {
 	}
 }
 
-func MakeEntityWithValidPhoneFromEthiopia() *testScenario {
+func MakeScenarioWithValidPhoneFromEthiopia() *testScenario {
 	return &testScenario{
 		testName:    "Valid phone from Ethiopia",
 		phone:       "(251) 911168450",
@@ -39,7 +39,7 @@ func MakeEntityWithValidPhoneFromEthiopia() *testScenario {
 	}
 }
 
-func MakeEntityWithInvalidPhoneFromEthiopia() *testScenario {
+func MakeScenarioWithInvalidPhoneFromEthiopia() *testScenario {
 	return &testScenario{
 		testName:    "Invalid phone from Ethiopia",
 		phone:       "(251) 9119454961",
@@ -48,7 +48,7 @@ func MakeEntityWithInvalidPhoneFromEthiopia() *testScenario {
 	}
 }
 
-func MakeEntityWithValidPhoneFromMorocco() *testScenario {
+func MakeScenarioWithValidPhoneFromMorocco() *testScenario {
 	return &testScenario{
 		testName:    "Valid phone from Morocco",
 		phone:       "(212) 633963130",
@@ -57,7 +57,7 @@ func MakeEntityWithValidPhoneFromMorocco() *testScenario {
 	}
 }
 
-func MakeEntityWithInvalidPhoneFromMorocco() *testScenario {
+func MakeScenarioWithInvalidPhoneFromMorocco() *testScenario {
 	return &testScenario{
 		testName:    "Invalid phone from Morocco",
 		phone:       "(212) 6007989253",
@@ -66,7 +66,7 @@ func MakeEntityWithInvalidPhoneFromMorocco() *testScenario {
 	}
 }
 
-func MakeEntityWithValidPhoneFromMozambique() *testScenario {
+func MakeScenarioWithValidPhoneFromMozambique() *testScenario {
 	return &testScenario{
 		testName:    "Valid phone from Mozambique",
 		phone:       "(258) 823747618",
@@ -75,7 +75,7 @@ func MakeEntityWithValidPhoneFromMozambique() *testScenario {
 	}
 }
 
-func MakeEntityWithInvalidPhoneFromMozambique() *testScenario {
+func MakeScenarioWithInvalidPhoneFromMozambique() *testScenario {
 	return &testScenario{
 		testName:    "Invalid phone from Mozambique",
 		phone:       "(258) 042423566",
@@ -84,7 +84,7 @@ func MakeEntityWithInvalidPhoneFromMozambique() *testScenario {
 	}
 }
 
-func MakeEntityWithValidPhoneFromUganda() *testScenario {
+func MakeScenarioWithValidPhoneFromUganda() *testScenario {
 	return &testScenario{
 		testName:    "Valid phone from Uganda",
 		phone:       "(256) 704244430",
@@ -93,7 +93,7 @@ func MakeEntityWithValidPhoneFromUganda() *testScenario {
 	}
 }
 
-func MakeEntityWithInvalidPhoneFromUganda() *testScenario {
+func MakeScenarioWithInvalidPhoneFromUganda() *testScenario {
 	return &testScenario{
 		testName:    "Invalid phone from Uganda",
 		phone:       "(256) 3142345678",

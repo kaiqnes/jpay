@@ -6,16 +6,16 @@ func TestCountry(t *testing.T) {
 	t.Parallel()
 
 	scenarios := []testScenario{
-		*MakeEntityWithValidPhoneFromCameroon(),
-		*MakeEntityWithInvalidPhoneFromCameroon(),
-		*MakeEntityWithValidPhoneFromEthiopia(),
-		*MakeEntityWithInvalidPhoneFromEthiopia(),
-		*MakeEntityWithValidPhoneFromMorocco(),
-		*MakeEntityWithInvalidPhoneFromMorocco(),
-		*MakeEntityWithValidPhoneFromMozambique(),
-		*MakeEntityWithInvalidPhoneFromMozambique(),
-		*MakeEntityWithValidPhoneFromUganda(),
-		*MakeEntityWithInvalidPhoneFromUganda(),
+		*MakeScenarioWithValidPhoneFromCameroon(),
+		*MakeScenarioWithInvalidPhoneFromCameroon(),
+		*MakeScenarioWithValidPhoneFromEthiopia(),
+		*MakeScenarioWithInvalidPhoneFromEthiopia(),
+		*MakeScenarioWithValidPhoneFromMorocco(),
+		*MakeScenarioWithInvalidPhoneFromMorocco(),
+		*MakeScenarioWithValidPhoneFromMozambique(),
+		*MakeScenarioWithInvalidPhoneFromMozambique(),
+		*MakeScenarioWithValidPhoneFromUganda(),
+		*MakeScenarioWithInvalidPhoneFromUganda(),
 	}
 
 	for _, scenario := range scenarios {
