@@ -8,8 +8,6 @@ import (
 )
 
 func TestCustomerService(t *testing.T) {
-	t.Parallel()
-
 	scenarios := []testScenario{
 		*MakeScenarioWithoutParamsExpectDtoFilledWithSingleCustomerAndErrorNil(),
 		*MakeScenarioWithoutParamsExpectDtoEmptyAndError(),
@@ -17,15 +15,15 @@ func TestCustomerService(t *testing.T) {
 		*MakeScenarioWithoutParamsExpectDtoFilledWithElevenCustomersAndErrorNil(),
 	}
 
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-	mockRepository := mock_repository.NewMockCustomerRepository(ctrl)
-	customerService := NewCustomerService(mockRepository)
-
 	for _, scenario := range scenarios {
 		t.Run(scenario.testName, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			mockRepository := mock_repository.NewMockCustomerRepository(ctrl)
+			testCustomerService := NewCustomerService(mockRepository)
+
 			mockRepository.EXPECT().GetCustomers(scenario.limit, scenario.offset, scenario.params).Return(scenario.mockTotal, scenario.mockResult, scenario.mockErr)
-			result, err := customerService.GetCustomers(scenario.limit, scenario.offset, scenario.params)
+
+			result, err := testCustomerService.GetCustomers(scenario.limit, scenario.offset, scenario.params)
 
 			if !reflect.DeepEqual(scenario.expectResult, result) {
 				t.Errorf("Test result is '%v' but was expected '%v'", result, scenario.expectResult)
@@ -37,6 +35,8 @@ func TestCustomerService(t *testing.T) {
 				(len(result.Customers) >= scenario.limit && len(result.Customers) != scenario.limit) {
 				t.Errorf("Test result is '%v' but was expected '%s'", scenario.mockTotal, result.Customers)
 			}
+
+			ctrl.Finish()
 		})
 	}
 }
