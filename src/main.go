@@ -2,15 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/nuno/nunes-jumia/src/config"
-	"github.com/nuno/nunes-jumia/src/routes"
+	"github.com/nuno/nunes-jumia/src/app"
 	"os"
 )
 
 func main() {
-	dbSession := config.GetDatabase()
-
-	router := routes.SetupResources(dbSession)
+	router := app.SetupApp()
 
 	port := getPort()
 	if err := router.Run(":" + port); err != nil {
