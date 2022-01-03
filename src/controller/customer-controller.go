@@ -22,6 +22,7 @@ const (
 
 //go:generate mockgen -source=./customer-controller.go -destination=./mocks/customer-controller_mock.go
 type CustomerController interface {
+	SetupRoutes(router *gin.Engine) *gin.Engine
 	GetCustomers(ctx *gin.Context)
 }
 
@@ -35,10 +36,17 @@ func NewCustomerController(service service.CustomerService) CustomerController {
 	}
 }
 
+func (controller customerController) SetupRoutes(router *gin.Engine) *gin.Engine {
+	router.GET("/customer/search", controller.GetCustomers)
+
+	return router
+}
+
 func (controller customerController) GetCustomers(ctx *gin.Context) {
 	limit, offset, params, err := extractQueryParams(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, dto.NewError(err.Error()))
+		return
 	}
 
 	outputDto, err := controller.service.GetCustomers(limit, offset, params)
