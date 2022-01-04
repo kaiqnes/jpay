@@ -9,10 +9,10 @@ import (
 
 func TestCustomerService(t *testing.T) {
 	scenarios := []testScenario{
-		*MakeScenarioWithoutParamsExpectDtoFilledWithSingleCustomerAndErrorNil(),
-		*MakeScenarioWithoutParamsExpectDtoEmptyAndError(),
-		*MakeScenarioWithoutParamsExpectDtoFilledWithInvalidCustomerAndErrorNil(),
-		*MakeScenarioWithoutParamsExpectDtoFilledWithElevenCustomersAndErrorNil(),
+		*MakeScenarioExpectDtoWithSingleCustomer(),
+		*MakeScenarioExpectDtoEmptyAndError(),
+		*MakeScenarioExpectDtoWithInvalidCustomer(),
+		*MakeScenarioExpectDtoWithElevenCustomers(),
 	}
 
 	for _, scenario := range scenarios {
@@ -23,7 +23,7 @@ func TestCustomerService(t *testing.T) {
 
 			mockRepository.EXPECT().GetCustomers(scenario.Limit, scenario.Offset).Return(scenario.MockTotal, scenario.MockResult, scenario.MockErr)
 
-			result, err := testCustomerService.GetCustomers(scenario.Limit, scenario.Offset, scenario.Params)
+			result, err := testCustomerService.GetCustomers(scenario.Limit, scenario.Offset)
 
 			isCustomersLengthCorrect := !(len(result.Customers) < scenario.Limit && len(result.Customers) != int(scenario.MockTotal)) ||
 				(len(result.Customers) >= scenario.Limit && len(result.Customers) != scenario.Limit)

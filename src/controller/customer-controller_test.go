@@ -13,14 +13,12 @@ import (
 
 func TestCustomerController(t *testing.T) {
 	scenarios := []testScenario{
-		*MakeScenarioWithoutParamsExpectCustomersDtoWithOneCustomer(),
-		*MakeScenarioWithoutParamsExpectCustomersDtoWithTwoCustomers(),
+		*MakeScenarioExpectCustomersDtoWithOneCustomer(),
+		*MakeScenarioExpectCustomersDtoWithTwoCustomers(),
 		*MakeScenarioExpectErrorToExtractLimitQueryParam(),
 		*MakeScenarioExpectErrorToExtractOffsetQueryParam(),
 		*MakeScenarioExpectCustomersDtoWithLimit1(),
 		*MakeScenarioExpectCustomersDtoWithOffset1(),
-		*MakeScenarioExpectCustomersDtoWithCountryNameFilter(),
-		*MakeScenarioExpectCustomersDtoWithStatusFilter(),
 		*MakeScenarioExpectErrorInServiceLayer(),
 	}
 
@@ -34,7 +32,7 @@ func TestCustomerController(t *testing.T) {
 			testController.SetupRoutes(router)
 
 			if scenario.ShouldMockServiceCall {
-				mockService.EXPECT().GetCustomers(scenario.Limit, scenario.Offset, scenario.MockParams).
+				mockService.EXPECT().GetCustomers(scenario.Limit, scenario.Offset).
 					Return(scenario.MockConsumerDto, scenario.MockErr)
 			}
 

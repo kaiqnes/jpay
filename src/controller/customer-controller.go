@@ -12,12 +12,10 @@ import (
 )
 
 const (
-	countryNameKey = "country_name"
-	statusKey      = "status"
-	limitKey       = "limit"
-	offsetKey      = "offset"
-	defaultLimit   = 10
-	defaultOffset  = 0
+	limitKey      = "limit"
+	offsetKey     = "offset"
+	defaultLimit  = 10
+	defaultOffset = 0
 )
 
 //go:generate mockgen -source=./customer-controller.go -destination=./mocks/customer-controller_mock.go
@@ -43,13 +41,13 @@ func (controller customerController) SetupRoutes(router *gin.Engine) *gin.Engine
 }
 
 func (controller customerController) GetCustomers(ctx *gin.Context) {
-	limit, offset, params, err := extractQueryParams(ctx)
+	limit, offset, err := extractQueryParams(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, dto.NewError(err.Error()))
 		return
 	}
 
-	outputDto, err := controller.service.GetCustomers(limit, offset, params)
+	outputDto, err := controller.service.GetCustomers(limit, offset)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, dto.NewError(err.Error()))
 		return
@@ -58,29 +56,17 @@ func (controller customerController) GetCustomers(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, outputDto)
 }
 
-func extractQueryParams(ctx *gin.Context) (int, int, map[string]string, error) {
+func extractQueryParams(ctx *gin.Context) (int, int, error) {
 	var (
-		inputCountryName = ctx.Query(countryNameKey)
-		inputStatus      = ctx.Query(statusKey)
-		inputLimit       = ctx.Query(limitKey)
-		inputOffset      = ctx.Query(offsetKey)
-
-		params        = make(map[string]string)
+		inputLimit    = ctx.Query(limitKey)
+		inputOffset   = ctx.Query(offsetKey)
 		limit, offset int
 	)
-
-	if len(strings.TrimSpace(inputCountryName)) > 0 {
-		params[countryNameKey] = inputCountryName
-	}
-
-	if len(strings.TrimSpace(inputStatus)) > 0 {
-		params[statusKey] = inputStatus
-	}
 
 	if len(strings.TrimSpace(inputLimit)) > 0 {
 		intLimit, err := parseInt(inputLimit, limitKey, 32)
 		if err != nil {
-			return 0, 0, map[string]string{}, err
+			return 0, 0, err
 		}
 		limit = intLimit
 	} else {
@@ -90,14 +76,14 @@ func extractQueryParams(ctx *gin.Context) (int, int, map[string]string, error) {
 	if len(strings.TrimSpace(inputOffset)) > 0 {
 		intOffset, err := parseInt(inputOffset, offsetKey, 32)
 		if err != nil {
-			return 0, 0, map[string]string{}, err
+			return 0, 0, err
 		}
 		offset = intOffset
 	} else {
 		offset = defaultOffset
 	}
 
-	return limit, offset, params, nil
+	return limit, offset, nil
 }
 
 func parseInt(strValue, fieldName string, bitSize int) (int, error) {

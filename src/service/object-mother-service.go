@@ -23,7 +23,6 @@ type testScenario struct {
 	TestName     string
 	Limit        int
 	Offset       int
-	Params       map[string]string
 	MockTotal    int64
 	MockResult   []model.Customer
 	MockErr      error
@@ -31,12 +30,11 @@ type testScenario struct {
 	ExpectErr    error
 }
 
-func MakeScenarioWithoutParamsExpectDtoFilledWithSingleCustomerAndErrorNil() *testScenario {
+func MakeScenarioExpectDtoWithSingleCustomer() *testScenario {
 	return &testScenario{
-		TestName:  "Get a customer with received Limit and Offset, without extra Params",
+		TestName:  "Get a customer with received Limit and Offset",
 		Limit:     defaultLimit,
 		Offset:    defaultOffset,
-		Params:    map[string]string{},
 		MockTotal: int64(1),
 		MockResult: []model.Customer{
 			{
@@ -64,12 +62,11 @@ func MakeScenarioWithoutParamsExpectDtoFilledWithSingleCustomerAndErrorNil() *te
 	}
 }
 
-func MakeScenarioWithoutParamsExpectDtoEmptyAndError() *testScenario {
+func MakeScenarioExpectDtoEmptyAndError() *testScenario {
 	return &testScenario{
-		TestName:     "Get a customer with received Limit and Offset, without extra Params and returns error",
+		TestName:     "Get a customer with received Limit and Offset returns error",
 		Limit:        defaultLimit,
 		Offset:       defaultOffset,
-		Params:       map[string]string{},
 		MockTotal:    int64(0),
 		MockResult:   []model.Customer{},
 		MockErr:      mockRepositoryError,
@@ -78,12 +75,11 @@ func MakeScenarioWithoutParamsExpectDtoEmptyAndError() *testScenario {
 	}
 }
 
-func MakeScenarioWithoutParamsExpectDtoFilledWithInvalidCustomerAndErrorNil() *testScenario {
+func MakeScenarioExpectDtoWithInvalidCustomer() *testScenario {
 	return &testScenario{
-		TestName:  "Get a customer without received Limit, Offset and extra Params",
+		TestName:  "Get a customer without received Limit and Offset",
 		Limit:     defaultLimit,
 		Offset:    defaultOffset,
-		Params:    map[string]string{},
 		MockTotal: int64(1),
 		MockResult: []model.Customer{
 			{
@@ -111,12 +107,11 @@ func MakeScenarioWithoutParamsExpectDtoFilledWithInvalidCustomerAndErrorNil() *t
 	}
 }
 
-func MakeScenarioWithoutParamsExpectDtoFilledWithElevenCustomersAndErrorNil() *testScenario {
+func MakeScenarioExpectDtoWithElevenCustomers() *testScenario {
 	return &testScenario{
-		TestName:  "Get 10 customers with received Limit and Offset, without extra Params",
+		TestName:  "Get 10 customers with received Limit and Offset",
 		Limit:     defaultLimit,
 		Offset:    defaultOffset,
-		Params:    map[string]string{},
 		MockTotal: int64(11),
 		MockResult: []model.Customer{
 			{
