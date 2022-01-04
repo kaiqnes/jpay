@@ -16,22 +16,22 @@ func TestCustomerService(t *testing.T) {
 	}
 
 	for _, scenario := range scenarios {
-		t.Run(scenario.testName, func(t *testing.T) {
+		t.Run(scenario.TestName, func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			mockRepository := mock_repository.NewMockCustomerRepository(ctrl)
 			testCustomerService := NewCustomerService(mockRepository)
 
-			mockRepository.EXPECT().GetCustomers(scenario.limit, scenario.offset).Return(scenario.mockTotal, scenario.mockResult, scenario.mockErr)
+			mockRepository.EXPECT().GetCustomers(scenario.Limit, scenario.Offset).Return(scenario.MockTotal, scenario.MockResult, scenario.MockErr)
 
-			result, err := testCustomerService.GetCustomers(scenario.limit, scenario.offset, scenario.params)
+			result, err := testCustomerService.GetCustomers(scenario.Limit, scenario.Offset, scenario.Params)
 
-			isCustomersLengthCorrect := !(len(result.Customers) < scenario.limit && len(result.Customers) != int(scenario.mockTotal)) ||
-				(len(result.Customers) >= scenario.limit && len(result.Customers) != scenario.limit)
+			isCustomersLengthCorrect := !(len(result.Customers) < scenario.Limit && len(result.Customers) != int(scenario.MockTotal)) ||
+				(len(result.Customers) >= scenario.Limit && len(result.Customers) != scenario.Limit)
 
 			ctrl.Finish()
 
-			assert.Equal(t, result, scenario.expectResult)
-			assert.Equal(t, err, scenario.expectErr)
+			assert.Equal(t, result, scenario.ExpectResult)
+			assert.Equal(t, err, scenario.ExpectErr)
 			assert.Equal(t, isCustomersLengthCorrect, true)
 		})
 	}
