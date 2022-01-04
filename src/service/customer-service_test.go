@@ -21,7 +21,7 @@ func TestCustomerService(t *testing.T) {
 			mockRepository := mock_repository.NewMockCustomerRepository(ctrl)
 			testCustomerService := NewCustomerService(mockRepository)
 
-			mockRepository.EXPECT().GetCustomers(scenario.limit, scenario.offset, scenario.params).Return(scenario.mockTotal, scenario.mockResult, scenario.mockErr)
+			mockRepository.EXPECT().GetCustomers(scenario.limit, scenario.offset).Return(scenario.mockTotal, scenario.mockResult, scenario.mockErr)
 
 			result, err := testCustomerService.GetCustomers(scenario.limit, scenario.offset, scenario.params)
 

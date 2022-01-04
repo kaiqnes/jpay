@@ -26,7 +26,7 @@ func NewCustomerService(repository repository.CustomerRepository) CustomerServic
 }
 
 func (service customerService) GetCustomers(limit, offset int, params map[string]string) (dto.CustomerOutputDto, error) {
-	total, customers, err := service.repository.GetCustomers(limit, offset, params)
+	total, customers, err := service.repository.GetCustomers(limit, offset)
 	if err != nil {
 		errMsg := fmt.Sprintf("Fail to retrieve customers in DB. Err: %s", err.Error())
 		return dto.CustomerOutputDto{}, errors.New(errMsg)

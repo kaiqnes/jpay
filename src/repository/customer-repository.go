@@ -7,7 +7,7 @@ import (
 
 //go:generate mockgen -source=./customer-repository.go -destination=./mocks/customer-repository_mock.go
 type CustomerRepository interface {
-	GetCustomers(limit, offset int, queryParams map[string]string) (int64, []model.Customer, error)
+	GetCustomers(limit, offset int) (int64, []model.Customer, error)
 }
 
 type customerRepository struct {
@@ -20,7 +20,7 @@ func NewCustomerRepository(session *gorm.DB) CustomerRepository {
 	}
 }
 
-func (repository customerRepository) GetCustomers(limit, offset int, queryParams map[string]string) (int64, []model.Customer, error) {
+func (repository customerRepository) GetCustomers(limit, offset int) (int64, []model.Customer, error) {
 	var (
 		customers []model.Customer
 		total     int64

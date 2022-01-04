@@ -35,9 +35,9 @@ func (m *MockCustomerRepository) EXPECT() *MockCustomerRepositoryMockRecorder {
 }
 
 // GetCustomers mocks base method.
-func (m *MockCustomerRepository) GetCustomers(limit, offset int, queryParams map[string]string) (int64, []model.Customer, error) {
+func (m *MockCustomerRepository) GetCustomers(limit, offset int) (int64, []model.Customer, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetCustomers", limit, offset, queryParams)
+	ret := m.ctrl.Call(m, "GetCustomers", limit, offset)
 	ret0, _ := ret[0].(int64)
 	ret1, _ := ret[1].([]model.Customer)
 	ret2, _ := ret[2].(error)
@@ -45,7 +45,7 @@ func (m *MockCustomerRepository) GetCustomers(limit, offset int, queryParams map
 }
 
 // GetCustomers indicates an expected call of GetCustomers.
-func (mr *MockCustomerRepositoryMockRecorder) GetCustomers(limit, offset, queryParams interface{}) *gomock.Call {
+func (mr *MockCustomerRepositoryMockRecorder) GetCustomers(limit, offset interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCustomers", reflect.TypeOf((*MockCustomerRepository)(nil).GetCustomers), limit, offset, queryParams)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCustomers", reflect.TypeOf((*MockCustomerRepository)(nil).GetCustomers), limit, offset)
 }
