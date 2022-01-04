@@ -1,9 +1,9 @@
 package service
 
 import (
+	"github.com/go-playground/assert/v2"
 	"github.com/golang/mock/gomock"
 	mock_repository "github.com/nuno/nunes-jumia/src/repository/mocks"
-	"reflect"
 	"testing"
 )
 
@@ -25,18 +25,14 @@ func TestCustomerService(t *testing.T) {
 
 			result, err := testCustomerService.GetCustomers(scenario.limit, scenario.offset, scenario.params)
 
-			if !reflect.DeepEqual(scenario.expectResult, result) {
-				t.Errorf("Test result is '%v' but was expected '%v'", result, scenario.expectResult)
-			}
-			if !reflect.DeepEqual(scenario.expectErr, err) {
-				t.Errorf("Test result is '%v' but was expected '%s'", err, scenario.expectErr)
-			}
-			if (len(result.Customers) < scenario.limit && len(result.Customers) != int(scenario.mockTotal)) ||
-				(len(result.Customers) >= scenario.limit && len(result.Customers) != scenario.limit) {
-				t.Errorf("Test result is '%v' but was expected '%s'", scenario.mockTotal, result.Customers)
-			}
+			isCustomersLengthCorrect := !(len(result.Customers) < scenario.limit && len(result.Customers) != int(scenario.mockTotal)) ||
+				(len(result.Customers) >= scenario.limit && len(result.Customers) != scenario.limit)
 
 			ctrl.Finish()
+
+			assert.Equal(t, result, scenario.expectResult)
+			assert.Equal(t, err, scenario.expectErr)
+			assert.Equal(t, isCustomersLengthCorrect, true)
 		})
 	}
 }

@@ -3,11 +3,11 @@ package controller
 import (
 	"bytes"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/assert/v2"
 	"github.com/golang/mock/gomock"
 	mock_service "github.com/nuno/nunes-jumia/src/service/mocks"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
 )
 
@@ -30,7 +30,6 @@ func TestCustomerController(t *testing.T) {
 			mockService := mock_service.NewMockCustomerService(ctrl)
 			testController := NewCustomerController(mockService)
 
-			gin.SetMode("release")
 			router := gin.New()
 			testController.SetupRoutes(router)
 
@@ -42,17 +41,10 @@ func TestCustomerController(t *testing.T) {
 			response := httptest.NewRecorder()
 			executeRequest(response, http.MethodGet, scenario.getFullUrl(), scenario.BodyString, router)
 
-			if !reflect.DeepEqual(scenario.ExpectStatus, response.Result().StatusCode) {
-				//t.Errorf("Test result is '%v' but was expected '%v'", response.Result().StatusCode, scenario.ExpectStatus)
-				t.Errorf("\n\nresult: '%v'\nexpect: '%v'", response.Result().StatusCode, scenario.ExpectStatus)
-			}
-
-			if !reflect.DeepEqual(scenario.ExpectResponse, response.Body.String()) {
-				//t.Errorf("Test result is '%v' but was expected '%v'", response.Body.String(), scenario.ExpectResponse)
-				t.Errorf("\n\nresult: '%v'\nexpect: '%v'", response.Body.String(), scenario.ExpectResponse)
-			}
-
 			ctrl.Finish()
+
+			assert.Equal(t, response.Body.String(), scenario.ExpectResponse)
+			assert.Equal(t, response.Result().StatusCode, scenario.ExpectStatus)
 		})
 	}
 }

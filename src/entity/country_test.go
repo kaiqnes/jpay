@@ -1,6 +1,9 @@
 package entity
 
-import "testing"
+import (
+	"github.com/go-playground/assert/v2"
+	"testing"
+)
 
 func TestCountryEntity(t *testing.T) {
 	scenarios := []testScenario{
@@ -17,14 +20,12 @@ func TestCountryEntity(t *testing.T) {
 	}
 
 	for _, scenario := range scenarios {
-		t.Run(scenario.testName, func(t *testing.T) {
-			currentCountry := Countries[scenario.countryCode]
+		t.Run(scenario.TestName, func(t *testing.T) {
+			currentCountry := Countries[scenario.CountryCode]
 
-			result := currentCountry.IsValidPhoneNumber(scenario.phone)
+			result := currentCountry.IsValidPhoneNumber(scenario.Phone)
 
-			if result != scenario.expect {
-				t.Errorf("Test result is '%s' but was expected '%s'", result, scenario.expect)
-			}
+			assert.Equal(t, result, scenario.ExpectResult)
 		})
 	}
 }
