@@ -24,7 +24,7 @@ func NewCustomerController(service service.CustomerService) CustomerController {
 }
 
 func (controller customerController) SetupRoutes(router *gin.Engine) *gin.Engine {
-	router.GET("/customer/search", controller.GetCustomers)
+	router.GET("/customers", controller.GetCustomers)
 
 	return router
 }

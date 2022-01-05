@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	defaultUrl = "http://localhost:8080/customer/search"
+	defaultUrl = "http://localhost:8080/customers"
 	valid      = "Valid"
 	invalid    = "Invalid"
 )
