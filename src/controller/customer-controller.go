@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	"fmt"
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/nuno/nunes-jumia/src/dto"
 	"github.com/nuno/nunes-jumia/src/service"
@@ -35,6 +36,13 @@ func NewCustomerController(service service.CustomerService) CustomerController {
 }
 
 func (controller customerController) SetupRoutes(router *gin.Engine) *gin.Engine {
+	router.Use(static.Serve("/", static.LocalFile("./src/views", true)))
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
+
 	router.GET("/customer/search", controller.GetCustomers)
 
 	return router
