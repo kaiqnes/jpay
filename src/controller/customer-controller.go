@@ -37,13 +37,9 @@ func NewCustomerController(service service.CustomerService) CustomerController {
 
 func (controller customerController) SetupRoutes(router *gin.Engine) *gin.Engine {
 	router.Use(static.Serve("/", static.LocalFile("./src/views", true)))
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
 
-	router.GET("/customer/search", controller.GetCustomers)
+	router.GET("/customers/search", controller.GetCustomers)
+	router.GET("/", controller.GetCustomersPage)
 
 	return router
 }
@@ -62,6 +58,10 @@ func (controller customerController) GetCustomers(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, outputDto)
+}
+
+func (controller customerController) GetCustomersPage(ctx *gin.Context) {
+	controller.GetCustomers(ctx)
 }
 
 func extractQueryParams(ctx *gin.Context) (int, int, error) {

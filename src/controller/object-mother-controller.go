@@ -11,7 +11,7 @@ import (
 
 const (
 	baseUrl    = "http://localhost:8080"
-	defaultUri = "/customer/search"
+	defaultUri = "/customers/search"
 	emptyBody  = ""
 	valid      = "Valid"
 	invalid    = "Invalid"
@@ -34,7 +34,7 @@ type testScenario struct {
 
 func MakeScenarioExpectCustomersDtoWithOneCustomer() *testScenario {
 	return &testScenario{
-		TestName:              "Test /customer/search resource receiving customerDto with one invalid customer",
+		TestName:              "Test /customers/search resource receiving customerDto with one invalid customer",
 		Method:                http.MethodGet,
 		Uri:                   defaultUri,
 		ReqParams:             nil,
@@ -64,7 +64,7 @@ func MakeScenarioExpectCustomersDtoWithOneCustomer() *testScenario {
 
 func MakeScenarioExpectCustomersDtoWithTwoCustomers() *testScenario {
 	return &testScenario{
-		TestName:              "Test /customer/search resource receiving customerDto with two customers - invalid and valid",
+		TestName:              "Test /customers/search resource receiving customerDto with two customers - invalid and valid",
 		Method:                http.MethodGet,
 		Uri:                   defaultUri,
 		ReqParams:             nil,
@@ -101,7 +101,7 @@ func MakeScenarioExpectCustomersDtoWithTwoCustomers() *testScenario {
 
 func MakeScenarioExpectErrorToExtractLimitQueryParam() *testScenario {
 	return &testScenario{
-		TestName:              "Test /customer/search?limit=ABC resource sending a invalid limit value and receiving an error",
+		TestName:              "Test /customers/search?limit=ABC resource sending a invalid limit value and receiving an error",
 		Method:                http.MethodGet,
 		Uri:                   defaultUri,
 		ReqParams:             map[string]interface{}{limitKey: "ABC"},
@@ -114,7 +114,7 @@ func MakeScenarioExpectErrorToExtractLimitQueryParam() *testScenario {
 
 func MakeScenarioExpectErrorToExtractOffsetQueryParam() *testScenario {
 	return &testScenario{
-		TestName:              "Test /customer/search?offset=ABC resource sending a invalid offset value and receiving an error",
+		TestName:              "Test /customers/search?offset=ABC resource sending a invalid offset value and receiving an error",
 		Method:                http.MethodGet,
 		Uri:                   defaultUri,
 		ReqParams:             map[string]interface{}{offsetKey: "ABC"},
@@ -127,7 +127,7 @@ func MakeScenarioExpectErrorToExtractOffsetQueryParam() *testScenario {
 
 func MakeScenarioExpectCustomersDtoWithLimit1() *testScenario {
 	return &testScenario{
-		TestName:              "Test /customer/search?limit=1 resource sending limit value and receiving customerDto with one invalid customer",
+		TestName:              "Test /customers/search?limit=1 resource sending limit value and receiving customerDto with one invalid customer",
 		Method:                http.MethodGet,
 		Uri:                   defaultUri,
 		ReqParams:             map[string]interface{}{limitKey: "1"},
@@ -157,7 +157,7 @@ func MakeScenarioExpectCustomersDtoWithLimit1() *testScenario {
 
 func MakeScenarioExpectCustomersDtoWithOffset1() *testScenario {
 	return &testScenario{
-		TestName:              "Test /customer/search?offset=1 resource sending offset value and receiving customerDto with one valid customer",
+		TestName:              "Test /customers/search?offset=1 resource sending offset value and receiving customerDto with one valid customer",
 		Method:                http.MethodGet,
 		Uri:                   defaultUri,
 		ReqParams:             map[string]interface{}{offsetKey: 1},
@@ -187,7 +187,7 @@ func MakeScenarioExpectCustomersDtoWithOffset1() *testScenario {
 
 func MakeScenarioExpectErrorInServiceLayer() *testScenario {
 	return &testScenario{
-		TestName:              "Test /customer/search resource receiving internal server error",
+		TestName:              "Test /customers/search resource receiving internal server error",
 		Method:                http.MethodGet,
 		Uri:                   defaultUri,
 		ReqParams:             nil,
