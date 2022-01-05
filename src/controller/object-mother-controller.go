@@ -26,13 +26,14 @@ type testScenario struct {
 	ShouldMockServiceCall bool
 	Limit                 int
 	Offset                int
+	MockParams            map[string]string
 	MockConsumerDto       dto.CustomerOutputDto
 	MockErr               error
 	ExpectStatus          int
 	ExpectResponse        string
 }
 
-func MakeScenarioExpectCustomersDtoWithOneCustomer() *testScenario {
+func MakeScenarioWithoutParamsExpectCustomersDtoWithOneCustomer() *testScenario {
 	return &testScenario{
 		TestName:              "Test /customer/search resource receiving customerDto with one invalid customer",
 		Method:                http.MethodGet,
@@ -42,6 +43,7 @@ func MakeScenarioExpectCustomersDtoWithOneCustomer() *testScenario {
 		ShouldMockServiceCall: true,
 		Limit:                 defaultLimit,
 		Offset:                defaultOffset,
+		MockParams:            make(map[string]string),
 		MockConsumerDto: dto.CustomerOutputDto{
 			Limit:  defaultLimit,
 			Offset: defaultOffset,
@@ -62,7 +64,7 @@ func MakeScenarioExpectCustomersDtoWithOneCustomer() *testScenario {
 	}
 }
 
-func MakeScenarioExpectCustomersDtoWithTwoCustomers() *testScenario {
+func MakeScenarioWithoutParamsExpectCustomersDtoWithTwoCustomers() *testScenario {
 	return &testScenario{
 		TestName:              "Test /customer/search resource receiving customerDto with two customers - invalid and valid",
 		Method:                http.MethodGet,
@@ -72,6 +74,7 @@ func MakeScenarioExpectCustomersDtoWithTwoCustomers() *testScenario {
 		ShouldMockServiceCall: true,
 		Limit:                 defaultLimit,
 		Offset:                defaultOffset,
+		MockParams:            make(map[string]string),
 		MockConsumerDto: dto.CustomerOutputDto{
 			Limit:  defaultLimit,
 			Offset: defaultOffset,
@@ -135,6 +138,7 @@ func MakeScenarioExpectCustomersDtoWithLimit1() *testScenario {
 		ShouldMockServiceCall: true,
 		Limit:                 1,
 		Offset:                defaultOffset,
+		MockParams:            make(map[string]string),
 		MockConsumerDto: dto.CustomerOutputDto{
 			Limit:  1,
 			Offset: defaultOffset,
@@ -165,6 +169,7 @@ func MakeScenarioExpectCustomersDtoWithOffset1() *testScenario {
 		ShouldMockServiceCall: true,
 		Limit:                 defaultLimit,
 		Offset:                1,
+		MockParams:            make(map[string]string),
 		MockConsumerDto: dto.CustomerOutputDto{
 			Limit:  defaultLimit,
 			Offset: 1,
@@ -185,6 +190,68 @@ func MakeScenarioExpectCustomersDtoWithOffset1() *testScenario {
 	}
 }
 
+func MakeScenarioFilteringByCountryNameExpectCustomersDtoWithOneCustomer() *testScenario {
+	return &testScenario{
+		TestName:              "Test /customer/search?country_name=morocco resource sending country_name value and receiving customerDto with one invalid customer",
+		Method:                http.MethodGet,
+		Uri:                   defaultUri,
+		ReqParams:             map[string]interface{}{countryNameKey: entity.NameMorocco},
+		BodyString:            emptyBody,
+		ShouldMockServiceCall: true,
+		Limit:                 defaultLimit,
+		Offset:                defaultOffset,
+		MockParams:            map[string]string{countryNameKey: entity.NameMorocco},
+		MockConsumerDto: dto.CustomerOutputDto{
+			Limit:  defaultLimit,
+			Offset: defaultOffset,
+			Total:  1,
+			Customers: []dto.Customer{
+				{
+					CustomerName: "John Doe",
+					CountryName:  entity.NameMorocco,
+					CountryCode:  entity.CodeMorocco,
+					PhoneNumber:  "6007989253",
+					Status:       invalid,
+				},
+			},
+		},
+		MockErr:        nil,
+		ExpectStatus:   http.StatusOK,
+		ExpectResponse: `{"limit":10,"offset":0,"total":1,"customers":[{"customer_name":"John Doe","country_name":"Morocco","country_code":"212","phone_number":"6007989253","status":"Invalid"}]}`,
+	}
+}
+
+func MakeScenarioFilteringByStatusExpectCustomersDtoWithOneCustomer() *testScenario {
+	return &testScenario{
+		TestName:              "Test /customer/search?status=invalid resource sending status value and receiving customerDto with one invalid customer",
+		Method:                http.MethodGet,
+		Uri:                   defaultUri,
+		ReqParams:             map[string]interface{}{statusKey: invalid},
+		BodyString:            emptyBody,
+		ShouldMockServiceCall: true,
+		Limit:                 defaultLimit,
+		Offset:                defaultOffset,
+		MockParams:            map[string]string{statusKey: invalid},
+		MockConsumerDto: dto.CustomerOutputDto{
+			Limit:  defaultLimit,
+			Offset: defaultOffset,
+			Total:  1,
+			Customers: []dto.Customer{
+				{
+					CustomerName: "John Doe",
+					CountryName:  entity.NameMorocco,
+					CountryCode:  entity.CodeMorocco,
+					PhoneNumber:  "6007989253",
+					Status:       invalid,
+				},
+			},
+		},
+		MockErr:        nil,
+		ExpectStatus:   http.StatusOK,
+		ExpectResponse: `{"limit":10,"offset":0,"total":1,"customers":[{"customer_name":"John Doe","country_name":"Morocco","country_code":"212","phone_number":"6007989253","status":"Invalid"}]}`,
+	}
+}
+
 func MakeScenarioExpectErrorInServiceLayer() *testScenario {
 	return &testScenario{
 		TestName:              "Test /customer/search resource receiving internal server error",
@@ -195,6 +262,7 @@ func MakeScenarioExpectErrorInServiceLayer() *testScenario {
 		ShouldMockServiceCall: true,
 		Limit:                 defaultLimit,
 		Offset:                defaultOffset,
+		MockParams:            map[string]string{},
 		MockConsumerDto:       dto.CustomerOutputDto{},
 		MockErr:               errors.New("mock_internal_server_error"),
 		ExpectStatus:          http.StatusInternalServerError,

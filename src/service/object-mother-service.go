@@ -23,6 +23,7 @@ type testScenario struct {
 	TestName     string
 	Limit        int
 	Offset       int
+	Params       map[string]string
 	MockTotal    int64
 	MockResult   []model.Customer
 	MockErr      error
@@ -30,11 +31,12 @@ type testScenario struct {
 	ExpectErr    error
 }
 
-func MakeScenarioExpectDtoWithSingleCustomer() *testScenario {
+func MakeScenarioWithoutParamsExpectDtoFilledWithSingleCustomerAndErrorNil() *testScenario {
 	return &testScenario{
-		TestName:  "Get a customer with received Limit and Offset",
+		TestName:  "Get a customer with received Limit and Offset, without extra Params",
 		Limit:     defaultLimit,
 		Offset:    defaultOffset,
+		Params:    map[string]string{},
 		MockTotal: int64(1),
 		MockResult: []model.Customer{
 			{
@@ -62,11 +64,12 @@ func MakeScenarioExpectDtoWithSingleCustomer() *testScenario {
 	}
 }
 
-func MakeScenarioExpectDtoEmptyAndError() *testScenario {
+func MakeScenarioWithoutParamsExpectDtoEmptyAndError() *testScenario {
 	return &testScenario{
-		TestName:     "Get a customer with received Limit and Offset returns error",
+		TestName:     "Get a customer with received Limit and Offset, without extra Params and returns error",
 		Limit:        defaultLimit,
 		Offset:       defaultOffset,
+		Params:       map[string]string{},
 		MockTotal:    int64(0),
 		MockResult:   []model.Customer{},
 		MockErr:      mockRepositoryError,
@@ -75,11 +78,12 @@ func MakeScenarioExpectDtoEmptyAndError() *testScenario {
 	}
 }
 
-func MakeScenarioExpectDtoWithInvalidCustomer() *testScenario {
+func MakeScenarioWithoutParamsExpectDtoFilledWithInvalidCustomerAndErrorNil() *testScenario {
 	return &testScenario{
-		TestName:  "Get a customer without received Limit and Offset",
+		TestName:  "Get a customer without received Limit, Offset and extra Params",
 		Limit:     defaultLimit,
 		Offset:    defaultOffset,
+		Params:    map[string]string{},
 		MockTotal: int64(1),
 		MockResult: []model.Customer{
 			{
@@ -107,11 +111,12 @@ func MakeScenarioExpectDtoWithInvalidCustomer() *testScenario {
 	}
 }
 
-func MakeScenarioExpectDtoWithElevenCustomers() *testScenario {
+func MakeScenarioWithoutParamsExpectDtoFilledWithElevenCustomersAndErrorNil() *testScenario {
 	return &testScenario{
-		TestName:  "Get 10 customers with received Limit and Offset",
+		TestName:  "Get 10 customers with received Limit and Offset, without extra Params",
 		Limit:     defaultLimit,
 		Offset:    defaultOffset,
+		Params:    map[string]string{},
 		MockTotal: int64(11),
 		MockResult: []model.Customer{
 			{
@@ -240,6 +245,275 @@ func MakeScenarioExpectDtoWithElevenCustomers() *testScenario {
 					CountryCode:  entity.CodeCameroon,
 					PhoneNumber:  "6780009592",
 					Status:       invalid,
+				},
+			},
+		},
+		ExpectErr: nil,
+	}
+}
+
+func MakeScenarioFilteringByCountryNameExpectDtoFilledWithCustomers() *testScenario {
+	return &testScenario{
+		TestName:  "Get 2 customers filtered by country_name morocco with received Limit and Offset",
+		Limit:     defaultLimit,
+		Offset:    defaultOffset,
+		Params:    map[string]string{"country_name": entity.NameMorocco},
+		MockTotal: int64(11),
+		MockResult: []model.Customer{
+			{
+				Id:    1,
+				Name:  "John Doe",
+				Phone: "(212) 6007989253",
+			},
+			{
+				Id:    2,
+				Name:  "James Smith",
+				Phone: "(212) 633963130",
+			},
+			{
+				Id:    3,
+				Name:  "Robert Jones",
+				Phone: "(258) 847651504",
+			},
+			{
+				Id:    4,
+				Name:  "Michael Taylor",
+				Phone: "(258) 84330678235",
+			},
+			{
+				Id:    5,
+				Name:  "William Williams",
+				Phone: "(256) 775069443",
+			},
+			{
+				Id:    6,
+				Name:  "Mary Brown",
+				Phone: "(256) 3142345678",
+			},
+			{
+				Id:    7,
+				Name:  "Patricia White",
+				Phone: "(251) 9773199405",
+			},
+			{
+				Id:    8,
+				Name:  "Jennifer Harris",
+				Phone: "(251) 914701723",
+			},
+			{
+				Id:    9,
+				Name:  "Linda Martin",
+				Phone: "(237) 697151594",
+			},
+			{
+				Id:    10,
+				Name:  "Elizabeth Davies",
+				Phone: "(237) 6780009592",
+			},
+		},
+		MockErr: nil,
+		ExpectResult: dto.CustomerOutputDto{
+			Limit:  defaultLimit,
+			Offset: defaultOffset,
+			Total:  11,
+			Customers: []dto.Customer{
+				{
+					CustomerName: "John Doe",
+					CountryName:  entity.NameMorocco,
+					CountryCode:  entity.CodeMorocco,
+					PhoneNumber:  "6007989253",
+					Status:       invalid,
+				},
+				{
+					CustomerName: "James Smith",
+					CountryName:  entity.NameMorocco,
+					CountryCode:  entity.CodeMorocco,
+					PhoneNumber:  "633963130",
+					Status:       valid,
+				},
+			},
+		},
+		ExpectErr: nil,
+	}
+}
+
+func MakeScenarioFilteringByStatusExpectDtoFilledWithCustomers() *testScenario {
+	return &testScenario{
+		TestName:  "Get 5 customers filtered by status valid with received Limit and Offset",
+		Limit:     defaultLimit,
+		Offset:    defaultOffset,
+		Params:    map[string]string{"status": valid},
+		MockTotal: int64(11),
+		MockResult: []model.Customer{
+			{
+				Id:    1,
+				Name:  "John Doe",
+				Phone: "(212) 6007989253",
+			},
+			{
+				Id:    2,
+				Name:  "James Smith",
+				Phone: "(212) 633963130",
+			},
+			{
+				Id:    3,
+				Name:  "Robert Jones",
+				Phone: "(258) 847651504",
+			},
+			{
+				Id:    4,
+				Name:  "Michael Taylor",
+				Phone: "(258) 84330678235",
+			},
+			{
+				Id:    5,
+				Name:  "William Williams",
+				Phone: "(256) 775069443",
+			},
+			{
+				Id:    6,
+				Name:  "Mary Brown",
+				Phone: "(256) 3142345678",
+			},
+			{
+				Id:    7,
+				Name:  "Patricia White",
+				Phone: "(251) 9773199405",
+			},
+			{
+				Id:    8,
+				Name:  "Jennifer Harris",
+				Phone: "(251) 914701723",
+			},
+			{
+				Id:    9,
+				Name:  "Linda Martin",
+				Phone: "(237) 697151594",
+			},
+			{
+				Id:    10,
+				Name:  "Elizabeth Davies",
+				Phone: "(237) 6780009592",
+			},
+		},
+		MockErr: nil,
+		ExpectResult: dto.CustomerOutputDto{
+			Limit:  defaultLimit,
+			Offset: defaultOffset,
+			Total:  11,
+			Customers: []dto.Customer{
+				{
+					CustomerName: "James Smith",
+					CountryName:  entity.NameMorocco,
+					CountryCode:  entity.CodeMorocco,
+					PhoneNumber:  "633963130",
+					Status:       valid,
+				},
+				{
+					CustomerName: "Robert Jones",
+					CountryName:  entity.NameMozambique,
+					CountryCode:  entity.CodeMozambique,
+					PhoneNumber:  "847651504",
+					Status:       valid,
+				},
+				{
+					CustomerName: "William Williams",
+					CountryName:  entity.NameUganda,
+					CountryCode:  entity.CodeUganda,
+					PhoneNumber:  "775069443",
+					Status:       valid,
+				},
+				{
+					CustomerName: "Jennifer Harris",
+					CountryName:  entity.NameEthiopia,
+					CountryCode:  entity.CodeEthiopia,
+					PhoneNumber:  "914701723",
+					Status:       valid,
+				},
+				{
+					CustomerName: "Linda Martin",
+					CountryName:  entity.NameCameroon,
+					CountryCode:  entity.CodeCameroon,
+					PhoneNumber:  "697151594",
+					Status:       valid,
+				},
+			},
+		},
+		ExpectErr: nil,
+	}
+}
+
+func MakeScenarioFilteringByCountryNameAndStatusExpectDtoFilledWithCustomers() *testScenario {
+	return &testScenario{
+		TestName:  "Get 1 customers filtered by country_name morocco and status valid with received Limit and Offset",
+		Limit:     defaultLimit,
+		Offset:    defaultOffset,
+		Params:    map[string]string{"country_name": entity.NameMorocco, "status": valid},
+		MockTotal: int64(11),
+		MockResult: []model.Customer{
+			{
+				Id:    1,
+				Name:  "John Doe",
+				Phone: "(212) 6007989253",
+			},
+			{
+				Id:    2,
+				Name:  "James Smith",
+				Phone: "(212) 633963130",
+			},
+			{
+				Id:    3,
+				Name:  "Robert Jones",
+				Phone: "(258) 847651504",
+			},
+			{
+				Id:    4,
+				Name:  "Michael Taylor",
+				Phone: "(258) 84330678235",
+			},
+			{
+				Id:    5,
+				Name:  "William Williams",
+				Phone: "(256) 775069443",
+			},
+			{
+				Id:    6,
+				Name:  "Mary Brown",
+				Phone: "(256) 3142345678",
+			},
+			{
+				Id:    7,
+				Name:  "Patricia White",
+				Phone: "(251) 9773199405",
+			},
+			{
+				Id:    8,
+				Name:  "Jennifer Harris",
+				Phone: "(251) 914701723",
+			},
+			{
+				Id:    9,
+				Name:  "Linda Martin",
+				Phone: "(237) 697151594",
+			},
+			{
+				Id:    10,
+				Name:  "Elizabeth Davies",
+				Phone: "(237) 6780009592",
+			},
+		},
+		MockErr: nil,
+		ExpectResult: dto.CustomerOutputDto{
+			Limit:  defaultLimit,
+			Offset: defaultOffset,
+			Total:  11,
+			Customers: []dto.Customer{
+				{
+					CustomerName: "James Smith",
+					CountryName:  entity.NameMorocco,
+					CountryCode:  entity.CodeMorocco,
+					PhoneNumber:  "633963130",
+					Status:       valid,
 				},
 			},
 		},
