@@ -28,7 +28,7 @@ func TestCustomerController(t *testing.T) {
 			mockService := mock_service.NewMockCustomerService(ctrl)
 			testController := NewCustomerController(mockService)
 
-			router := gin.New()
+			router := gin.Default()
 			testController.SetupRoutes(router)
 
 			if scenario.ShouldMockServiceCall {

@@ -16,7 +16,7 @@ func SetupApp() *gin.Engine {
 }
 
 func setupResources(dbSession *gorm.DB) *gin.Engine {
-	router := gin.New()
+	router := gin.Default()
 
 	customerRepository := repository.NewCustomerRepository(dbSession)
 	customerService := service.NewCustomerService(customerRepository)
