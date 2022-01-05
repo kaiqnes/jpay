@@ -12,13 +12,13 @@ import (
 
 func TestCustomerRepository(t *testing.T) {
 	scenarios := []testScenario{
-		*MakeScenarioWithLimitOffsetDefaultReturnsTwoCustomers(),
-		*MakeScenarioWithLimit1AndOffsetDefaultReturnsOneCustomer(),
-		*MakeScenarioWithLimitDefaultAndOffset2ReturnsNoneCustomer(),
-		*MakeScenarioWithLimitOffsetDefaultReturnsNoneCustomer(),
+		*MakeScenarioReturnsTwoCustomers(),
+		*MakeScenarioReturnsOneCustomer(),
+		*MakeScenarioReturnsNoneCustomer(),
 	}
 
 	dbName := "sample_test.db"
+	defer removeTestDB(dbName)
 
 	for _, scenario := range scenarios {
 		t.Run(scenario.TestName, func(t *testing.T) {
@@ -31,15 +31,12 @@ func TestCustomerRepository(t *testing.T) {
 				}
 			}
 
-			total, result, err := repository.GetCustomers(scenario.Limit, scenario.Offset)
+			result, err := repository.GetCustomers()
 
-			assert.Equal(t, total, scenario.ExpectTotal)
 			assert.Equal(t, len(result), scenario.ExpectLengthResult)
 			assert.Equal(t, err, scenario.ExpectError)
 		})
 	}
-
-	removeTestDB(dbName)
 }
 
 func beforeEach(dbName string) *gorm.DB {

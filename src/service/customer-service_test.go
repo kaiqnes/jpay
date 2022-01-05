@@ -9,10 +9,10 @@ import (
 
 func TestCustomerService(t *testing.T) {
 	scenarios := []testScenario{
-		*MakeScenarioExpectDtoWithSingleCustomer(),
-		*MakeScenarioExpectDtoEmptyAndError(),
+		*MakeScenarioExpectDtoWithSingleValidCustomer(),
 		*MakeScenarioExpectDtoWithInvalidCustomer(),
-		*MakeScenarioExpectDtoWithElevenCustomers(),
+		*MakeScenarioExpectDtoWithTenCustomers(),
+		*MakeScenarioExpectDtoEmptyAndError(),
 	}
 
 	for _, scenario := range scenarios {
@@ -21,18 +21,14 @@ func TestCustomerService(t *testing.T) {
 			mockRepository := mock_repository.NewMockCustomerRepository(ctrl)
 			testCustomerService := NewCustomerService(mockRepository)
 
-			mockRepository.EXPECT().GetCustomers(scenario.Limit, scenario.Offset).Return(scenario.MockTotal, scenario.MockResult, scenario.MockErr)
+			mockRepository.EXPECT().GetCustomers().Return(scenario.MockResult, scenario.MockErr)
 
-			result, err := testCustomerService.GetCustomers(scenario.Limit, scenario.Offset)
-
-			isCustomersLengthCorrect := !(len(result.Customers) < scenario.Limit && len(result.Customers) != int(scenario.MockTotal)) ||
-				(len(result.Customers) >= scenario.Limit && len(result.Customers) != scenario.Limit)
+			result, err := testCustomerService.GetCustomers()
 
 			ctrl.Finish()
 
 			assert.Equal(t, result, scenario.ExpectResult)
 			assert.Equal(t, err, scenario.ExpectErr)
-			assert.Equal(t, isCustomersLengthCorrect, true)
 		})
 	}
 }

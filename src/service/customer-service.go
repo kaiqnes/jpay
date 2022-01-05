@@ -12,7 +12,7 @@ import (
 
 //go:generate mockgen -source=./customer-service.go -destination=./mocks/customer-service_mock.go
 type CustomerService interface {
-	GetCustomers(limit, offset int) (dto.CustomerOutputDto, error)
+	GetCustomers() (dto.CustomerOutputDto, error)
 }
 
 type customerService struct {
@@ -25,19 +25,19 @@ func NewCustomerService(repository repository.CustomerRepository) CustomerServic
 	}
 }
 
-func (service customerService) GetCustomers(limit, offset int) (dto.CustomerOutputDto, error) {
-	total, customers, err := service.repository.GetCustomers(limit, offset)
+func (service customerService) GetCustomers() (dto.CustomerOutputDto, error) {
+	customers, err := service.repository.GetCustomers()
 	if err != nil {
 		errMsg := fmt.Sprintf("Fail to retrieve customers in DB. Err: %s", err.Error())
 		return dto.CustomerOutputDto{}, errors.New(errMsg)
 	}
 
-	outputDto := buildCustomerOutputDto(total, limit, offset, customers)
+	outputDto := buildCustomerOutputDto(customers)
 
 	return outputDto, nil
 }
 
-func buildCustomerOutputDto(total int64, limit, offset int, customers []model.Customer) (outputDto dto.CustomerOutputDto) {
+func buildCustomerOutputDto(customers []model.Customer) (outputDto dto.CustomerOutputDto) {
 	regexGetCountryCodeAndPhoneNumber := "^\\((\\d{3})\\)\\s((?:.*))$"
 	matcher, _ := regexp.Compile(regexGetCountryCodeAndPhoneNumber)
 
@@ -45,10 +45,6 @@ func buildCustomerOutputDto(total int64, limit, offset int, customers []model.Cu
 		matches := matcher.FindStringSubmatch(customer.Phone)
 		outputDto.Customers = append(outputDto.Customers, buildCustomerDto(customer, matches))
 	}
-
-	outputDto.Total = total
-	outputDto.Limit = limit
-	outputDto.Offset = offset
 
 	return
 }

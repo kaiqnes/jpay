@@ -35,16 +35,16 @@ func (m *MockCustomerService) EXPECT() *MockCustomerServiceMockRecorder {
 }
 
 // GetCustomers mocks base method.
-func (m *MockCustomerService) GetCustomers(limit, offset int) (dto.CustomerOutputDto, error) {
+func (m *MockCustomerService) GetCustomers() (dto.CustomerOutputDto, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetCustomers", limit, offset)
+	ret := m.ctrl.Call(m, "GetCustomers")
 	ret0, _ := ret[0].(dto.CustomerOutputDto)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetCustomers indicates an expected call of GetCustomers.
-func (mr *MockCustomerServiceMockRecorder) GetCustomers(limit, offset interface{}) *gomock.Call {
+func (mr *MockCustomerServiceMockRecorder) GetCustomers() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCustomers", reflect.TypeOf((*MockCustomerService)(nil).GetCustomers), limit, offset)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCustomers", reflect.TypeOf((*MockCustomerService)(nil).GetCustomers))
 }

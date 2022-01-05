@@ -8,49 +8,33 @@ import (
 )
 
 const (
-	valid                  = "Valid"
-	invalid                = "Invalid"
-	defaultLimit           = 10
-	defaultOffset          = 0
-	mockRepositoryErrorMsg = "mock repository error"
-)
-
-var (
-	mockRepositoryError = errors.New(mockRepositoryErrorMsg)
+	valid   = "Valid"
+	invalid = "Invalid"
 )
 
 type testScenario struct {
 	TestName     string
-	Limit        int
-	Offset       int
-	MockTotal    int64
 	MockResult   []model.Customer
 	MockErr      error
 	ExpectResult dto.CustomerOutputDto
 	ExpectErr    error
 }
 
-func MakeScenarioExpectDtoWithSingleCustomer() *testScenario {
+func MakeScenarioExpectDtoWithSingleValidCustomer() *testScenario {
 	return &testScenario{
-		TestName:  "Get a customer with received Limit and Offset",
-		Limit:     defaultLimit,
-		Offset:    defaultOffset,
-		MockTotal: int64(1),
+		TestName: "Get a customer",
 		MockResult: []model.Customer{
 			{
-				Id:    1,
-				Name:  "John Doe",
+				Id:    2,
+				Name:  "James Smith",
 				Phone: "(212) 633963130",
 			},
 		},
 		MockErr: nil,
 		ExpectResult: dto.CustomerOutputDto{
-			Limit:  defaultLimit,
-			Offset: defaultOffset,
-			Total:  1,
 			Customers: []dto.Customer{
 				{
-					CustomerName: "John Doe",
+					CustomerName: "James Smith",
 					CountryName:  entity.NameMorocco,
 					CountryCode:  entity.CodeMorocco,
 					PhoneNumber:  "633963130",
@@ -62,25 +46,9 @@ func MakeScenarioExpectDtoWithSingleCustomer() *testScenario {
 	}
 }
 
-func MakeScenarioExpectDtoEmptyAndError() *testScenario {
-	return &testScenario{
-		TestName:     "Get a customer with received Limit and Offset returns error",
-		Limit:        defaultLimit,
-		Offset:       defaultOffset,
-		MockTotal:    int64(0),
-		MockResult:   []model.Customer{},
-		MockErr:      mockRepositoryError,
-		ExpectResult: dto.CustomerOutputDto{},
-		ExpectErr:    errors.New("Fail to retrieve customers in DB. Err: mock repository error"),
-	}
-}
-
 func MakeScenarioExpectDtoWithInvalidCustomer() *testScenario {
 	return &testScenario{
-		TestName:  "Get a customer without received Limit and Offset",
-		Limit:     defaultLimit,
-		Offset:    defaultOffset,
-		MockTotal: int64(1),
+		TestName: "Get a customer without received Limit and Offset",
 		MockResult: []model.Customer{
 			{
 				Id:    1,
@@ -90,9 +58,6 @@ func MakeScenarioExpectDtoWithInvalidCustomer() *testScenario {
 		},
 		MockErr: nil,
 		ExpectResult: dto.CustomerOutputDto{
-			Limit:  defaultLimit,
-			Offset: defaultOffset,
-			Total:  1,
 			Customers: []dto.Customer{
 				{
 					CustomerName: "John Doe",
@@ -107,12 +72,9 @@ func MakeScenarioExpectDtoWithInvalidCustomer() *testScenario {
 	}
 }
 
-func MakeScenarioExpectDtoWithElevenCustomers() *testScenario {
+func MakeScenarioExpectDtoWithTenCustomers() *testScenario {
 	return &testScenario{
-		TestName:  "Get 10 customers with received Limit and Offset",
-		Limit:     defaultLimit,
-		Offset:    defaultOffset,
-		MockTotal: int64(11),
+		TestName: "Get 10 customers with received Limit and Offset",
 		MockResult: []model.Customer{
 			{
 				Id:    1,
@@ -167,9 +129,6 @@ func MakeScenarioExpectDtoWithElevenCustomers() *testScenario {
 		},
 		MockErr: nil,
 		ExpectResult: dto.CustomerOutputDto{
-			Limit:  defaultLimit,
-			Offset: defaultOffset,
-			Total:  11,
 			Customers: []dto.Customer{
 				{
 					CustomerName: "John Doe",
@@ -244,5 +203,15 @@ func MakeScenarioExpectDtoWithElevenCustomers() *testScenario {
 			},
 		},
 		ExpectErr: nil,
+	}
+}
+
+func MakeScenarioExpectDtoEmptyAndError() *testScenario {
+	return &testScenario{
+		TestName:     "Receive error from repository layer",
+		MockResult:   []model.Customer{},
+		MockErr:      errors.New("mock repository error"),
+		ExpectResult: dto.CustomerOutputDto{},
+		ExpectErr:    errors.New("Fail to retrieve customers in DB. Err: mock repository error"),
 	}
 }
