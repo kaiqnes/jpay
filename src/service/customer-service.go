@@ -50,16 +50,10 @@ func buildCustomerOutputDto(customers []model.Customer) (outputDto dto.CustomerO
 }
 
 func buildCustomerDto(customer model.Customer, matches []string) (newCustomer dto.Customer) {
-	newCustomer.SetFormattedName(customer.Name)
-
-	if matches == nil || len(matches) == 0 {
-		return dto.NewUnidentifiedCustomer(customer.Name, customer.Phone)
-	}
-
 	countryCode := matches[1]
 	phoneNumber := matches[2]
 	customerCountry := entity.Countries[countryCode]
 	status := customerCountry.IsValidPhoneNumber(customer.Phone)
 
-	return dto.NewIdentifiedCustomer(customer.Name, phoneNumber, countryCode, customerCountry.Name, status)
+	return dto.NewCustomer(customer.Name, phoneNumber, countryCode, customerCountry.Name, status)
 }

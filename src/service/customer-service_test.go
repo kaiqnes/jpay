@@ -10,7 +10,6 @@ import (
 func TestCustomerService(t *testing.T) {
 	scenarios := []testScenario{
 		*MakeScenarioExpectDtoWithSingleValidCustomer(),
-		*MakeScenarioExpectDtoWithInvalidCustomer(),
 		*MakeScenarioExpectDtoWithTenCustomers(),
 		*MakeScenarioExpectDtoEmptyAndError(),
 	}

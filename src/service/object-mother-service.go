@@ -46,32 +46,6 @@ func MakeScenarioExpectDtoWithSingleValidCustomer() *testScenario {
 	}
 }
 
-func MakeScenarioExpectDtoWithInvalidCustomer() *testScenario {
-	return &testScenario{
-		TestName: "Get a customer without received Limit and Offset",
-		MockResult: []model.Customer{
-			{
-				Id:    1,
-				Name:  "John Doe",
-				Phone: "+123 633963130",
-			},
-		},
-		MockErr: nil,
-		ExpectResult: dto.CustomerOutputDto{
-			Customers: []dto.Customer{
-				{
-					CustomerName: "John Doe",
-					CountryName:  "undefined_country_name",
-					CountryCode:  "undefined_country_code",
-					PhoneNumber:  "+123 633963130",
-					Status:       invalid,
-				},
-			},
-		},
-		ExpectErr: nil,
-	}
-}
-
 func MakeScenarioExpectDtoWithTenCustomers() *testScenario {
 	return &testScenario{
 		TestName: "Get 10 customers with received Limit and Offset",

@@ -16,26 +16,12 @@ type Customer struct {
 	Status       string `json:"status"`
 }
 
-func (customer *Customer) SetFormattedName(name string) {
-	customer.CustomerName = strings.Title(strings.ToLower(name))
-}
-
-func NewIdentifiedCustomer(name, phoneNumber, countryCode, countryName, status string) Customer {
+func NewCustomer(name, phoneNumber, countryCode, countryName, status string) Customer {
 	return Customer{
 		CustomerName: strings.Title(strings.ToLower(name)),
 		CountryName:  countryName,
 		CountryCode:  countryCode,
 		PhoneNumber:  phoneNumber,
 		Status:       status,
-	}
-}
-
-func NewUnidentifiedCustomer(name, phoneNumber string) Customer {
-	return Customer{
-		CustomerName: strings.Title(strings.ToLower(name)),
-		CountryName:  "undefined_country_name",
-		CountryCode:  "undefined_country_code",
-		Status:       "Invalid",
-		PhoneNumber:  phoneNumber,
 	}
 }
