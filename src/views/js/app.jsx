@@ -92,17 +92,18 @@ class Table extends React.Component {
                                             );
                                         })}
                                     </select>
-                                </div><div>
-                                Country
-                                <select onChange={this.filterByCountry}>
-                                    <option></option>
-                                    {this.state.availableCountries.map(item => {
-                                        return (
-                                            <option>{item}</option>
-                                        );
-                                    })}
-                                </select>
-                            </div>
+                                </div>
+                                <div>
+                                    Country
+                                    <select onChange={this.filterByCountry}>
+                                        <option></option>
+                                        {this.state.availableCountries.map(item => {
+                                            return (
+                                                <option>{item}</option>
+                                            );
+                                        })}
+                                    </select>
+                                </div>
                             </div>
                             <div className="table-responsive">
                                 <table class="table">
