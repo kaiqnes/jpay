@@ -1,4 +1,4 @@
-# Nunes-Jumia - Customers Classify
+# JPay - Customers Classify
 
 
 <p align="center">
