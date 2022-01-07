@@ -24,7 +24,6 @@ type testScenario struct {
 	Limit        int
 	Offset       int
 	Params       map[string]string
-	MockTotal    int64
 	MockResult   []model.Customer
 	MockErr      error
 	ExpectResult dto.CustomerOutputDto
@@ -33,11 +32,10 @@ type testScenario struct {
 
 func MakeScenarioWithoutParamsExpectDtoFilledWithSingleCustomerAndErrorNil() *testScenario {
 	return &testScenario{
-		TestName:  "Get a customer with received Limit and Offset, without extra Params",
-		Limit:     defaultLimit,
-		Offset:    defaultOffset,
-		Params:    map[string]string{},
-		MockTotal: int64(1),
+		TestName: "Get a customer with received Limit and Offset, without extra Params",
+		Limit:    defaultLimit,
+		Offset:   defaultOffset,
+		Params:   map[string]string{},
 		MockResult: []model.Customer{
 			{
 				Id:    1,
@@ -70,7 +68,6 @@ func MakeScenarioWithoutParamsExpectDtoEmptyAndError() *testScenario {
 		Limit:        defaultLimit,
 		Offset:       defaultOffset,
 		Params:       map[string]string{},
-		MockTotal:    int64(0),
 		MockResult:   []model.Customer{},
 		MockErr:      mockRepositoryError,
 		ExpectResult: dto.CustomerOutputDto{},
@@ -80,11 +77,10 @@ func MakeScenarioWithoutParamsExpectDtoEmptyAndError() *testScenario {
 
 func MakeScenarioWithoutParamsExpectDtoFilledWithInvalidCustomerAndErrorNil() *testScenario {
 	return &testScenario{
-		TestName:  "Get a customer without received Limit, Offset and extra Params",
-		Limit:     defaultLimit,
-		Offset:    defaultOffset,
-		Params:    map[string]string{},
-		MockTotal: int64(1),
+		TestName: "Get a customer without received Limit, Offset and extra Params",
+		Limit:    defaultLimit,
+		Offset:   defaultOffset,
+		Params:   map[string]string{},
 		MockResult: []model.Customer{
 			{
 				Id:    1,
@@ -111,13 +107,12 @@ func MakeScenarioWithoutParamsExpectDtoFilledWithInvalidCustomerAndErrorNil() *t
 	}
 }
 
-func MakeScenarioWithoutParamsExpectDtoFilledWithElevenCustomersAndErrorNil() *testScenario {
+func MakeScenarioWithoutParamsExpectDtoFilledWithTenCustomersAndErrorNil() *testScenario {
 	return &testScenario{
-		TestName:  "Get 10 customers with received Limit and Offset, without extra Params",
-		Limit:     defaultLimit,
-		Offset:    defaultOffset,
-		Params:    map[string]string{},
-		MockTotal: int64(11),
+		TestName: "Get 10 customers with received Limit and Offset, without extra Params",
+		Limit:    defaultLimit,
+		Offset:   defaultOffset,
+		Params:   map[string]string{},
 		MockResult: []model.Customer{
 			{
 				Id:    1,
@@ -174,7 +169,7 @@ func MakeScenarioWithoutParamsExpectDtoFilledWithElevenCustomersAndErrorNil() *t
 		ExpectResult: dto.CustomerOutputDto{
 			Limit:  defaultLimit,
 			Offset: defaultOffset,
-			Total:  11,
+			Total:  10,
 			Customers: []dto.Customer{
 				{
 					CustomerName: "John Doe",
@@ -254,11 +249,10 @@ func MakeScenarioWithoutParamsExpectDtoFilledWithElevenCustomersAndErrorNil() *t
 
 func MakeScenarioFilteringByCountryNameExpectDtoFilledWithCustomers() *testScenario {
 	return &testScenario{
-		TestName:  "Get 2 customers filtered by country_name morocco with received Limit and Offset",
-		Limit:     defaultLimit,
-		Offset:    defaultOffset,
-		Params:    map[string]string{"country_name": entity.NameMorocco},
-		MockTotal: int64(11),
+		TestName: "Get 2 customers filtered by country_name morocco with received Limit and Offset",
+		Limit:    defaultLimit,
+		Offset:   defaultOffset,
+		Params:   map[string]string{"country_name": entity.NameMorocco},
 		MockResult: []model.Customer{
 			{
 				Id:    1,
@@ -315,7 +309,7 @@ func MakeScenarioFilteringByCountryNameExpectDtoFilledWithCustomers() *testScena
 		ExpectResult: dto.CustomerOutputDto{
 			Limit:  defaultLimit,
 			Offset: defaultOffset,
-			Total:  11,
+			Total:  2,
 			Customers: []dto.Customer{
 				{
 					CustomerName: "John Doe",
@@ -339,11 +333,10 @@ func MakeScenarioFilteringByCountryNameExpectDtoFilledWithCustomers() *testScena
 
 func MakeScenarioFilteringByStatusExpectDtoFilledWithCustomers() *testScenario {
 	return &testScenario{
-		TestName:  "Get 5 customers filtered by status valid with received Limit and Offset",
-		Limit:     defaultLimit,
-		Offset:    defaultOffset,
-		Params:    map[string]string{"status": valid},
-		MockTotal: int64(11),
+		TestName: "Get 5 customers filtered by status valid with received Limit and Offset",
+		Limit:    defaultLimit,
+		Offset:   defaultOffset,
+		Params:   map[string]string{"status": valid},
 		MockResult: []model.Customer{
 			{
 				Id:    1,
@@ -400,7 +393,7 @@ func MakeScenarioFilteringByStatusExpectDtoFilledWithCustomers() *testScenario {
 		ExpectResult: dto.CustomerOutputDto{
 			Limit:  defaultLimit,
 			Offset: defaultOffset,
-			Total:  11,
+			Total:  5,
 			Customers: []dto.Customer{
 				{
 					CustomerName: "James Smith",
@@ -445,11 +438,10 @@ func MakeScenarioFilteringByStatusExpectDtoFilledWithCustomers() *testScenario {
 
 func MakeScenarioFilteringByCountryNameAndStatusExpectDtoFilledWithCustomers() *testScenario {
 	return &testScenario{
-		TestName:  "Get 1 customers filtered by country_name morocco and status valid with received Limit and Offset",
-		Limit:     defaultLimit,
-		Offset:    defaultOffset,
-		Params:    map[string]string{"country_name": entity.NameMorocco, "status": valid},
-		MockTotal: int64(11),
+		TestName: "Get 1 customers filtered by country_name morocco and status valid with received Limit and Offset",
+		Limit:    defaultLimit,
+		Offset:   defaultOffset,
+		Params:   map[string]string{"country_name": entity.NameMorocco, "status": valid},
 		MockResult: []model.Customer{
 			{
 				Id:    1,
@@ -506,7 +498,7 @@ func MakeScenarioFilteringByCountryNameAndStatusExpectDtoFilledWithCustomers() *
 		ExpectResult: dto.CustomerOutputDto{
 			Limit:  defaultLimit,
 			Offset: defaultOffset,
-			Total:  11,
+			Total:  1,
 			Customers: []dto.Customer{
 				{
 					CustomerName: "James Smith",

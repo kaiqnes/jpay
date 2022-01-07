@@ -270,6 +270,19 @@ func MakeScenarioExpectErrorInServiceLayer() *testScenario {
 	}
 }
 
+func MakeScenarioExpectEmptyObject() *testScenario {
+	return &testScenario{
+		TestName:              "Test / resource receiving ok",
+		Method:                http.MethodGet,
+		Uri:                   "/",
+		ReqParams:             nil,
+		BodyString:            emptyBody,
+		ShouldMockServiceCall: false,
+		ExpectStatus:          http.StatusOK,
+		ExpectResponse:        "{}",
+	}
+}
+
 func (testScenario *testScenario) getFullUrl() (fullUrl string) {
 	fullUrl = fmt.Sprintf("%s%s", baseUrl, testScenario.Uri)
 

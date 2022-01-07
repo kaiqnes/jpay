@@ -22,6 +22,7 @@ func TestCustomerController(t *testing.T) {
 		*MakeScenarioFilteringByCountryNameExpectCustomersDtoWithOneCustomer(),
 		*MakeScenarioFilteringByStatusExpectCustomersDtoWithOneCustomer(),
 		*MakeScenarioExpectErrorInServiceLayer(),
+		*MakeScenarioExpectEmptyObject(),
 	}
 
 	for _, scenario := range scenarios {

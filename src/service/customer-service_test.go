@@ -12,7 +12,7 @@ func TestCustomerService(t *testing.T) {
 		*MakeScenarioWithoutParamsExpectDtoFilledWithSingleCustomerAndErrorNil(),
 		*MakeScenarioWithoutParamsExpectDtoEmptyAndError(),
 		*MakeScenarioWithoutParamsExpectDtoFilledWithInvalidCustomerAndErrorNil(),
-		*MakeScenarioWithoutParamsExpectDtoFilledWithElevenCustomersAndErrorNil(),
+		*MakeScenarioWithoutParamsExpectDtoFilledWithTenCustomersAndErrorNil(),
 		*MakeScenarioFilteringByCountryNameExpectDtoFilledWithCustomers(),
 		*MakeScenarioFilteringByStatusExpectDtoFilledWithCustomers(),
 		*MakeScenarioFilteringByCountryNameAndStatusExpectDtoFilledWithCustomers(),
@@ -24,7 +24,7 @@ func TestCustomerService(t *testing.T) {
 			mockRepository := mock_repository.NewMockCustomerRepository(ctrl)
 			testCustomerService := NewCustomerService(mockRepository)
 
-			mockRepository.EXPECT().GetCustomers(scenario.Limit, scenario.Offset).Return(scenario.MockTotal, scenario.MockResult, scenario.MockErr)
+			mockRepository.EXPECT().GetCustomers().Return(scenario.MockResult, scenario.MockErr)
 
 			result, err := testCustomerService.GetCustomers(scenario.Limit, scenario.Offset, scenario.Params)
 

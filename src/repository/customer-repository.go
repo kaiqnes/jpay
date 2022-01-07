@@ -7,7 +7,7 @@ import (
 
 //go:generate mockgen -source=./customer-repository.go -destination=./mocks/customer-repository_mock.go
 type CustomerRepository interface {
-	GetCustomers(limit, offset int) (int64, []model.Customer, error)
+	GetCustomers() ([]model.Customer, error)
 }
 
 type customerRepository struct {
@@ -20,19 +20,9 @@ func NewCustomerRepository(session *gorm.DB) CustomerRepository {
 	}
 }
 
-func (repository customerRepository) GetCustomers(limit, offset int) (int64, []model.Customer, error) {
-	var (
-		customers []model.Customer
-		total     int64
-	)
+func (repository customerRepository) GetCustomers() ([]model.Customer, error) {
+	var customers []model.Customer
 
 	result := repository.session.Find(&customers)
-	if result.Error != nil {
-		return total, customers, result.Error
-	}
-
-	total = result.RowsAffected
-
-	result.Limit(limit).Offset(offset).Order("phone asc").Find(&customers)
-	return total, customers, result.Error
+	return customers, result.Error
 }
