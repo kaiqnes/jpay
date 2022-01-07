@@ -9,9 +9,13 @@ import (
 
 func TestCustomerService(t *testing.T) {
 	scenarios := []testScenario{
-		*MakeScenarioExpectDtoWithSingleValidCustomer(),
-		*MakeScenarioExpectDtoWithTenCustomers(),
-		*MakeScenarioExpectDtoEmptyAndError(),
+		*MakeScenarioWithoutParamsExpectDtoFilledWithSingleCustomerAndErrorNil(),
+		*MakeScenarioWithoutParamsExpectDtoEmptyAndError(),
+		*MakeScenarioWithoutParamsExpectDtoFilledWithInvalidCustomerAndErrorNil(),
+		*MakeScenarioWithoutParamsExpectDtoFilledWithTenCustomersAndErrorNil(),
+		*MakeScenarioFilteringByCountryNameExpectDtoFilledWithCustomers(),
+		*MakeScenarioFilteringByStatusExpectDtoFilledWithCustomers(),
+		*MakeScenarioFilteringByCountryNameAndStatusExpectDtoFilledWithCustomers(),
 	}
 
 	for _, scenario := range scenarios {
@@ -22,7 +26,7 @@ func TestCustomerService(t *testing.T) {
 
 			mockRepository.EXPECT().GetCustomers().Return(scenario.MockResult, scenario.MockErr)
 
-			result, err := testCustomerService.GetCustomers()
+			result, err := testCustomerService.GetCustomers(scenario.Limit, scenario.Offset, scenario.Params)
 
 			ctrl.Finish()
 

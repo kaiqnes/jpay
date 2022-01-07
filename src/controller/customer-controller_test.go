@@ -13,9 +13,16 @@ import (
 
 func TestCustomerController(t *testing.T) {
 	scenarios := []testScenario{
-		*MakeScenarioExpectCustomersDtoWithOneCustomer(),
-		*MakeScenarioExpectCustomersDtoWithTwoCustomers(),
+		*MakeScenarioWithoutParamsExpectCustomersDtoWithOneCustomer(),
+		*MakeScenarioWithoutParamsExpectCustomersDtoWithTwoCustomers(),
+		*MakeScenarioExpectErrorToExtractLimitQueryParam(),
+		*MakeScenarioExpectErrorToExtractOffsetQueryParam(),
+		*MakeScenarioExpectCustomersDtoWithLimit1(),
+		*MakeScenarioExpectCustomersDtoWithOffset1(),
+		*MakeScenarioFilteringByCountryNameExpectCustomersDtoWithOneCustomer(),
+		*MakeScenarioFilteringByStatusExpectCustomersDtoWithOneCustomer(),
 		*MakeScenarioExpectErrorInServiceLayer(),
+		*MakeScenarioExpectEmptyObject(),
 	}
 
 	for _, scenario := range scenarios {
@@ -28,11 +35,12 @@ func TestCustomerController(t *testing.T) {
 			testController.SetupRoutes(router)
 
 			if scenario.ShouldMockServiceCall {
-				mockService.EXPECT().GetCustomers().Return(scenario.MockConsumerDto, scenario.MockErr)
+				mockService.EXPECT().GetCustomers(scenario.Limit, scenario.Offset, scenario.MockParams).
+					Return(scenario.MockConsumerDto, scenario.MockErr)
 			}
 
 			response := httptest.NewRecorder()
-			executeRequest(response, http.MethodGet, defaultUrl, "", router)
+			executeRequest(response, http.MethodGet, scenario.getFullUrl(), scenario.BodyString, router)
 
 			ctrl.Finish()
 

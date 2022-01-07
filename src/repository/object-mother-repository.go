@@ -31,24 +31,9 @@ func MakeScenarioReturnsTwoCustomers() *testScenario {
 	}
 }
 
-func MakeScenarioReturnsOneCustomer() *testScenario {
-	return &testScenario{
-		TestName: "Retrieve one customer",
-		Rows: []model.Customer{
-			{
-				Id:    1,
-				Name:  "John Doe",
-				Phone: "(212) 6007989253",
-			},
-		},
-		ExpectLengthResult: 1,
-		ExpectError:        nil,
-	}
-}
-
 func MakeScenarioReturnsNoneCustomer() *testScenario {
 	return &testScenario{
-		TestName:           "Retrieve none customer",
+		TestName:           "Send limit and offset default to retrieve none customer",
 		Rows:               []model.Customer{},
 		ExpectLengthResult: 0,
 		ExpectError:        nil,
