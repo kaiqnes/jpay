@@ -25,6 +25,7 @@ const (
 type CustomerController interface {
 	SetupRoutes(router *gin.Engine) *gin.Engine
 	GetCustomers(ctx *gin.Context)
+	GetCustomersPage(ctx *gin.Context)
 }
 
 type customerController struct {
@@ -38,9 +39,16 @@ func NewCustomerController(service service.CustomerService) CustomerController {
 }
 
 func (controller customerController) SetupRoutes(router *gin.Engine) *gin.Engine {
-	router.GET("/customer/search", controller.GetCustomers)
+	router.Use(static.Serve("/", static.LocalFile("./src/views", true)))
+
+	router.GET("/customers/search", controller.GetCustomers)
+	router.GET("/", controller.GetCustomersPage)
 
 	return router
+}
+
+func (controller customerController) GetCustomersPage(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{})
 }
 
 func (controller customerController) GetCustomers(ctx *gin.Context) {
@@ -98,6 +106,7 @@ func extractQueryParams(ctx *gin.Context) (int, int, map[string]string, error) {
 		offset = defaultOffset
 	}
 
+	fmt.Println("limit", limit)
 	return limit, offset, params, nil
 }
 
