@@ -1,6 +1,8 @@
 #Nunes-Jumia - Customers Classify
+
+
 <p align="center">
-  <img src="image/classify.png" alt="classify"/>
+  <img src="image/classify.png" alt="classify" width="300" height="200"/>
 </p>
 
 This project contains a SPA that consumes a Golang API integrated with a SQLite database.
@@ -39,7 +41,5 @@ go run main.go
 After you have started the application, you can access the customers page here:
 [CUSTOMERS PAGE](http://localhost:8080/)
 
-And also, can consume Customer API directly using the postman collection located in root of this directory.
-```
-nunes_jpay.postman_collection.json
-```
+And also, can consume Customer API directly using the postman collection located in root of this directory:
+[POSTMAN_COLLECTION](https://github.com/kaiqnes/jpay/blob/main/nunes_jpay.postman_collection.json)
