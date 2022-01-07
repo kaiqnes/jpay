@@ -163,7 +163,6 @@ class Table extends React.Component {
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th>#</th>
                                         <th>Customer Name</th>
                                         <th>Country Name</th>
                                         <th>Country Code</th>
@@ -172,10 +171,9 @@ class Table extends React.Component {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {this.state.customers.map((item, index) => {
+                                    {this.state.customers.map((item) => {
                                         return (
-                                            <tr key={index + 1}>
-                                                <td>{index + 1}</td>
+                                            <tr key={item.phone_number}>
                                                 <td>{item.customer_name}</td>
                                                 <td>{item.country_name}</td>
                                                 <td>{item.country_code}</td>
