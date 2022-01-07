@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "babec4a5-8533-48d0-a365-e13c5aa1bd9d",
+		"name": "nunes_jpay",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Customers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/customers/search?limit=10&offset=0",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customers",
+						"search"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "country_name",
+							"value": "Uganda",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "Valid",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customers - Filter by country_name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/customers/search?limit=10&offset=0&country_name=Uganda",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customers",
+						"search"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "country_name",
+							"value": "Uganda"
+						},
+						{
+							"key": "status",
+							"value": "Valid",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customers - Filter by status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/customers/search?limit=10&offset=0&status=Valid",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customers",
+						"search"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "country_name",
+							"value": "Uganda",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "Valid"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
