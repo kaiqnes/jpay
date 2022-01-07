@@ -19,23 +19,14 @@ In SPA, you're able to filter the customers by their country and state of phone 
 - Gin Gonic v1.7.7
 - GORM v1.22.4
 
-## First steps
-
-### Go Runtime Version
-Have go [installed](https://golang.org/doc/install) in your computer
-
-### Installing dependencies
-Run the following command into /src to get the dependencies installed
+## Starting the application
+To start the application, execute the following commands:
 ```
-go install
+# docker build -t nunes_jpay .
+
+# docker run -p 8080:8080 --name nunes_jpay -d nunes_jpay
 ```
 
-### Starting the application
-
-Run the following command into /src to get the application started
-```
-go run main.go
-```
 
 ## Testing
 After you have started the application, you can access the customers page here:
